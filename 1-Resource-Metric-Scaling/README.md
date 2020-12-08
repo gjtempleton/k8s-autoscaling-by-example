@@ -6,7 +6,7 @@ First lets make sure we can access the metrics API
 kubectl top nodes
 ```
 
-If you receive an error instead of statistics showing the resource usage of the nodes in your cluster you'll need to set up the metrics server to scrape and serve the resource metrics in the cluster:
+If you receive an error instead of statistics showing the resource usage of the nodes in your cluster you'll need to set up the [metrics-server](https://github.com/kubernetes-sigs/metrics-server) to scrape and serve the resource metrics in the cluster:
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami

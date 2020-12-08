@@ -6,7 +6,7 @@ What if we have a workload which doesn't scale its ability to do work with its r
 
 This is where custom metrics autoscaling comes in.
 
-There's a number of different projects capable of serving custom metrics within a cluster, for this demo we'll usee the prometheus-adapter.
+There's a [number of different projects](https://github.com/kubernetes/metrics/blob/master/IMPLEMENTATIONS.md#custom-metrics-api) capable of serving custom metrics within a cluster, for this demo we'll usee the [prometheus-adapter](https://github.com/DirectXMan12/k8s-prometheus-adapter).
 
 First lets make sure we have a Prometheus installed in the cluster and port-forward to make sure its successfully scraping metrics. We'll lower its scrape interval from the default to get a faster feedback loop.
 

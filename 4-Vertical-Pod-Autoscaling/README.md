@@ -2,7 +2,7 @@
 
 What if instead of scaling our workloads horizontally by adding more replicas, we wanted instead to scale vertically, by giving our pods more resources when needed?
 
-First we'll install the components of the VPA:
+First we'll install the components of the [Vertical Pod Autoscaler(VPA)](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler):
 
 ```bash
 helm repo add cowboysysop https://cowboysysop.github.io/charts/

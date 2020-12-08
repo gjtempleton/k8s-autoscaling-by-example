@@ -1,6 +1,6 @@
 # External metrics scaling
 
-First, lets install a rabbitmq setup into the cluster to make use of as a message queue and ensure we're scraping metrics from it (if you've deleted the Prometheus helm deploy from the cluster, you'll need to redeploy it to scrape the metrics)
+First, lets install a [rabbitmq](https://www.rabbitmq.com/) setup into the cluster to make use of as a message queue and ensure we're scraping metrics from it (if you've deleted the Prometheus helm deploy from the cluster, you'll need to redeploy it to scrape the metrics)
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -13,13 +13,13 @@ Now, lets deploy a workload which will publish some messages to that rabbit queu
 kubectl apply -f rabbit-message-publisher.yaml
 ```
 
-Assuming that we've kept the prometheus adapter from previous steps lets add some new rules to it for external metrics:
+Assuming that we've kept the prometheus0adapter from previous steps lets add some new rules to it for external metrics:
 
 ```bash
 helm upgrade prometheus-adapter prometheus-community/prometheus-adapter --values prometheus-adapter-external-metrics-values.yaml
 ```
 
-We'll need to wait some time for the new Prometheus-adapter instance to come to life and scrape metrics from Prometheus:
+We'll need to wait some time for the new prometheus-adapter instance to come to life and scrape metrics from Prometheus:
 
 ```bash
 kubectl get apiservices.apiregistration.k8s.io
