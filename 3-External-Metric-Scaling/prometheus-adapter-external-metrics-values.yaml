@@ -1,0 +1,25 @@
+prometheus:
+  url: http://prometheus-server.default.svc.cluster.local
+  port: 80
+
+rules:
+  custom:
+    - seriesQuery: 'http_requests_total{kubernetes_namespace!="",kubernetes_pod_name!=""}'
+      resources:
+        overrides:
+          kubernetes_namespace: {resource: "namespace"}
+          kubernetes_pod_name: {resource: "pod"}
+      name:
+        matches: "^(.*)_total"
+        as: "${1}_per_second"
+      metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+  external:
+    - seriesQuery: '{__name__=~"^.*_queue_(length|size|messages)$",kubernetes_namespace!=""}'
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+      name:
+        matches: ^.*_queue_(length|size|messages)$
+        as: "$0"
+      metricsQuery: max(<<.Series>>{<<.LabelMatchers>>})

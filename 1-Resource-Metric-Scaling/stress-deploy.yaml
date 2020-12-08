@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-stress-app
+  labels:
+    app: cpu-stress-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-stress-app
+  template:
+    metadata:
+      labels:
+        app: cpu-stress-app
+    spec:
+      containers:
+      - image: progrium/stress:latest
+        command:
+          - "/usr/bin/stress"
+          - "--cpu"
+          - "4"
+          - "--vm"
+          - "1"
+        name: cpu-stress-pod
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 75m
+            memory: 64Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-stress-app
+  labels:
+    app: memory-stress-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memory-stress-app
+  template:
+    metadata:
+      labels:
+        app: memory-stress-app
+    spec:
+      containers:
+      - image: progrium/stress:latest
+        command:
+          - "/usr/bin/stress"
+          - "--cpu"
+          - "1"
+          - "--vm"
+          - "10"
+        name: memory-stress-pod
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 75m
+            memory: 64Mi

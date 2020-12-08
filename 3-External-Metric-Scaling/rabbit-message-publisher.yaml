@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-publisher
+  labels:
+    app: message-publisher
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: message-publisher
+  template:
+    metadata:
+      labels:
+        app: message-publisher
+    spec:
+      containers:
+      - image: gjtempleton/pika:0.2.1
+        name: message-publisher
+        command:
+          - "python"
+          - "-u"
+          - "/pika-producer.py"
+        env:
+          - name: RABBIT_CONNECTION
+            value: rabbitmq.default.svc.cluster.local
+          - name: RABBIT_USERNAME
+            value: user
+          - name: RABBIT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: rabbitmq-password
+                name: rabbitmq
+          - name: MESSAGES_PER_SECOND
+            value: "1"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 64Mi

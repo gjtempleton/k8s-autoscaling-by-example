@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-app
+  labels:
+    app: sample-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-app
+  template:
+    metadata:
+      labels:
+        app: sample-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8080"
+    spec:
+      containers:
+      - image: luxas/autoscale-demo:v0.1.2
+        name: metrics-provider
+        ports:
+        - name: http
+          containerPort: 8080
+        resources:
+          requests:
+            cpu: 500m
+            memory: 128Mi
+          limits:
+            cpu: 750m
+            memory: 256Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sample-app
+  name: sample-app
+  namespace: default
+spec:
+  clusterIP: 10.96.81.120
+  ports:
+  - name: 80-8080
+    port: 80
+    targetPort: 8080
+  selector:
+    app: sample-app

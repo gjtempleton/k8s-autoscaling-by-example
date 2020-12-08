@@ -1,0 +1,35 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sample-app-load-generator
+  labels:
+    app: sample-app-load-generator
+spec:
+  template:
+    metadata:
+      labels:
+        app: sample-app-load-generator
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8080"
+    spec:
+      containers:
+      - image: mocoso/apachebench
+        name: load-generator
+        command:
+          - "ab"
+          - "-n"
+          - "10000"
+          - "-c"
+          - "5"
+          - "http://sample-app.default.svc.cluster.local/"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 128Mi
+          limits:
+            cpu: 750m
+            memory: 256Mi
+      restartPolicy: Never
